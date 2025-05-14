@@ -1,7 +1,5 @@
 # LangGPT: Korean-Japanese AI Translation Service
 
-![LangGPT Logo](https://via.placeholder.com/150x50?text=LangGPT)
-
 ## 📌 Introduction
 LangGPT is an AI-powered translation service specializing in Korean-Japanese bidirectional translation. Using a two-step translation process, it provides more natural-sounding results beyond the limitations of conventional machine translation.
 
