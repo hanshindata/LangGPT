@@ -284,14 +284,30 @@ ja_to_ko_review_prompt = ChatPromptTemplate.from_template("""
 개선된 최종 번역만 제공한다. 설명이나 부가 설명 없이 개선된 한국어 번역만 작성한다.
 """)
 
-# 번역 API 엔드포인트
+# 사용자별 일일 번역 제한 설정 (선택사항)
 @app.post("/translate", response_model=TranslationResponse)
 async def translate(
     request: TranslationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    """텍스트 번역 및 검토 수행"""
+    # 사용자의 일일 번역 횟수 확인 (선택적 보안 강화)
+    today = datetime.now().date()
+    today_start = datetime.combine(today, datetime.min.time())
+    
+    # 오늘 사용자의 번역 횟수 조회
+    user_translations_today = db.query(TranslationHistory).filter(
+        TranslationHistory.user_id == current_user.id,
+        TranslationHistory.created_at >= today_start.isoformat()
+    ).count()
+    
+    # 일일 제한 확인 (예: 100회)
+    if user_translations_today >= 100:
+        raise HTTPException(
+            status_code=429, 
+            detail="Daily translation limit reached. Please try again tomorrow."
+        )
+    
     try:
         # 번역 방향에 따라 프롬프트 선택
         if request.direction == "ko2ja":
