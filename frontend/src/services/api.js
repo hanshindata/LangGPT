@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-// API 기본 URL - 환경 변수가 설정되어 있으면 사용, 없으면 기본값 사용
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+// API 기본 URL 설정
+// 개발 환경에서는 .env의 값 사용, 프로덕션에서는 상대 경로 또는 실제 배포 URL 사용
+const API_URL = process.env.NODE_ENV === 'production'
+  ? process.env.REACT_APP_API_URL || 'https://langgpt-backend.onrender.com'
+  : process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
+console.log('Using API URL:', API_URL);
 
 // axios 인스턴스 생성
 const api = axios.create({
