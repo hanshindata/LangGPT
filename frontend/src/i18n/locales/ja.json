@@ -22,7 +22,8 @@
   "result": {
     "original": "原文",
     "translated": "翻訳結果",
-    "initial": "下訳を見る"
+    "initial": "下訳を見る",
+    "show_original": "原文を見る"
   },
   "history": {
     "recent": "最近の翻訳履歴",

@@ -172,15 +172,21 @@ function App() {
         
         {result && (
           <div className="result-container">
-            <div className="result-box">
-              <h3>{t('result.original')}</h3>
-              <p className="original-text">{result.original}</p>
-            </div>
+            {/* 번역 결과만 기본적으로 표시 */}
             <div className="result-box">
               <h3>{t('result.translated')}</h3>
               <p className="result-text">{result.reviewed}</p>
             </div>
-            {/* 초벌 번역 결과도 표시 (접었다 펼 수 있게) */}
+            
+            {/* 원문 보기 옵션 - 접었다 펼 수 있는 방식으로 변경 */}
+            <details className="initial-translation-details">
+              <summary>{t('result.show_original', '원문 보기')}</summary>
+              <div className="initial-translation">
+                <p>{result.original}</p>
+              </div>
+            </details>
+            
+            {/* 초벌 번역 결과 - 접었다 펼 수 있는 방식 유지 */}
             <details className="initial-translation-details">
               <summary>{t('result.initial')}</summary>
               <div className="initial-translation">

@@ -22,7 +22,8 @@
   "result": {
     "original": "원문",
     "translated": "번역 결과",
-    "initial": "초벌 번역 보기"
+    "initial": "초벌 번역 보기",
+    "show_original": "원문 보기"
   },
   "history": {
     "recent": "최근 번역 기록",
