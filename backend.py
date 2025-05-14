@@ -1,7 +1,6 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import redis
 import os
 import json
 from dotenv import load_dotenv
@@ -206,14 +205,6 @@ async def get_user_info(current_user: User = Depends(get_current_user)):
         "email": current_user.email
     }
 
-# Redis 캐시 설정
-redis_client = redis.Redis(
-    host=os.getenv("REDIS_HOST", "localhost"),
-    port=int(os.getenv("REDIS_PORT", 6379)),
-    db=0,
-    decode_responses=True
-)
-
 # OpenAI API 설정
 openai_api_key = os.getenv("OPENAI_API_KEY")
 if not openai_api_key:
@@ -297,20 +288,10 @@ ja_to_ko_review_prompt = ChatPromptTemplate.from_template("""
 @app.post("/translate", response_model=TranslationResponse)
 async def translate(
     request: TranslationRequest,
-    force_refresh: bool = False,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
     """텍스트 번역 및 검토 수행"""
-    # 캐시 키 생성
-    cache_key = f"translate:{request.text}:{request.direction}"
-    
-    # 캐시 확인
-    if not force_refresh:
-        cached_result = redis_client.get(cache_key)
-        if cached_result:
-            return json.loads(cached_result)
-    
     try:
         # 번역 방향에 따라 프롬프트 선택
         if request.direction == "ko2ja":
@@ -341,9 +322,6 @@ async def translate(
             "translated": initial_translation.strip(),
             "reviewed": reviewed_translation.strip()
         }
-        
-        # 결과 캐싱
-        redis_client.set(cache_key, json.dumps(result), ex=3600)
         
         # 결과를 DB에 저장
         history = TranslationHistory(
