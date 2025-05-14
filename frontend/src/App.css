@@ -1,0 +1,405 @@
+.App {
+  text-align: center;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.translation-form {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.radio-group {
+  display: flex;
+  gap: 20px;
+}
+
+.radio-group label {
+  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.submit-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.submit-btn:disabled {
+  background-color: #cccccc;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin: 10px 0;
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.result-box, .review-box {
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+}
+
+.result-text, .review-text {
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+h3 {
+  margin-top: 0;
+  color: #333;
+}
+
+@media (max-width: 600px) {
+  .radio-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-link {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.logout-btn {
+  background-color: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #fff;
+  color: #282c34;
+}
+
+.welcome-text {
+  color: #61dafb;
+  margin-right: auto;
+}
+
+.initial-translation-details {
+  margin-top: 20px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.initial-translation-details summary {
+  cursor: pointer;
+  color: #666;
+  font-weight: 500;
+}
+
+.initial-translation {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+}
+
+.recent-translations {
+  margin-top: 40px;
+  padding: 20px;
+  border-top: 1px solid #eee;
+}
+
+.translations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.translation-item {
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  transition: transform 0.2s;
+}
+
+.translation-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.translation-meta {
+  display: flex;
+  justify-content: space-between;
+  color: #666;
+  font-size: 0.8em;
+  margin-bottom: 8px;
+}
+
+.translation-content {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.translation-original {
+  color: #333;
+  font-weight: 500;
+}
+
+.translation-result {
+  color: #0056b3;
+}
+
+.view-all-link {
+  display: block;
+  text-align: center;
+  margin-top: 20px;
+  color: #0056b3;
+  text-decoration: none;
+}
+
+.App-footer {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  text-align: center;
+  color: #666;
+}
+
+/* 인증 폼 스타일 */
+.auth-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form label {
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.auth-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.auth-btn {
+  background-color: #0056b3;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.auth-btn:hover {
+  background-color: #004494;
+}
+
+.auth-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error-message {
+  color: #d9534f;
+  background-color: #f9f2f2;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+}
+
+/* 번역 방향 전환 버튼 스타일 */
+.direction-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.direction-btn {
+  background-color: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  padding: 8px 15px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.direction-btn:hover {
+  background-color: #e9e9e9;
+  transform: translateY(-2px);
+}
+
+.toggle-icon {
+  font-size: 18px;
+  color: #0056b3;
+}
+
+.current-direction {
+  font-weight: 500;
+}
+
+/* 언어 선택기 스타일 */
+.language-selector {
+  display: flex;
+  gap: 5px;
+  margin-left: 15px;
+}
+
+.lang-btn {
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.lang-btn.active {
+  color: #fff;
+  border-color: #fff;
+  font-weight: bold;
+}
+
+/* 인증 페이지 언어 선택기 스타일 */
+.auth-language-selector {
+  display: flex;
+  justify-content: flex-end;
+  gap: 5px;
+  margin-bottom: 20px;
+}
+
+.lang-btn-alt {
+  background-color: transparent;
+  color: #666;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.lang-btn-alt:hover {
+  background-color: #f5f5f5;
+}
+
+.lang-btn-alt.active {
+  color: #0056b3;
+  border-color: #0056b3;
+  font-weight: bold;
+}
+
+/* 인증 페이지 로고 스타일 */
+.auth-logo {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.auth-logo h1 {
+  font-size: 2.5rem;
+  color: #0056b3;
+  margin: 0;
+}
+
+.auth-description {
+  color: #666;
+  font-size: 1rem;
+  margin-top: 5px;
+}

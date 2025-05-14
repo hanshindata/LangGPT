@@ -1,0 +1,57 @@
+{
+  "title": "LangGPT - 한일/일한 번역",
+  "nav": {
+    "welcome": "안녕하세요, {{username}}님!",
+    "history": "번역 기록",
+    "logout": "로그아웃",
+    "login": "로그인",
+    "register": "회원가입"
+  },
+  "direction": {
+    "ko2ja": "한국어 → 일본어",
+    "ja2ko": "일본어 → 한국어"
+  },
+  "form": {
+    "ko_input": "번역할 한국어 텍스트:",
+    "ja_input": "번역할 일본어 텍스트:",
+    "ko_placeholder": "번역할 한국어 텍스트를 입력하세요.",
+    "ja_placeholder": "번역할 일본어 텍ストを入力してください。",
+    "translate": "번역하기",
+    "translating": "번역 중..."
+  },
+  "result": {
+    "original": "원문",
+    "translated": "번역 결과",
+    "initial": "초벌 번역 보기"
+  },
+  "history": {
+    "recent": "최근 번역 기록",
+    "view_all": "모든 기록 보기",
+    "empty": "번역 기록이 없습니다.",
+    "title": "나의 번역 기록"
+  },
+  "errors": {
+    "login_required": "로그인이 필요합니다.",
+    "translation_failed": "번역 과정에서 오류가 발생했습니다.",
+    "history_failed": "기록을 불러오는데 실패했습니다.",
+    "login_failed": "로그인에 실패했습니다. 사용자명과 비밀번호를 확인하세요.",
+    "password_mismatch": "비밀번호가 일치하지 않습니다.",
+    "register_failed": "회원가입 중 오류가 발생했습니다.",
+    "invalid_input": "입력 형식이 올바르지 않습니다."
+  },
+  "auth": {
+    "username": "사용자명",
+    "password": "비밀번호",
+    "email": "이메일",
+    "confirm_password": "비밀번호 확인",
+    "no_account": "계정이 없으신가요?",
+    "have_account": "이미 계정이 있으신가요?",
+    "login_link": "로그인하기",
+    "register_success": "회원가입이 완료되었습니다. 로그인해주세요.",
+    "tagline": "머신러닝 기반 한일/일한 번역 서비스"
+  },
+  "footer": "© 2025 LangGPT - 한일/일한 번역 서비스",
+  "language": "언어",
+  "change_language": "언어 변경",
+  "loading": "처리 중..."
+}

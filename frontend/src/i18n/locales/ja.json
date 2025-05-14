@@ -1,0 +1,57 @@
+{
+  "title": "LangGPT - 日韓/韓日翻訳",
+  "nav": {
+    "welcome": "こんにちは、{{username}}さん！",
+    "history": "翻訳履歴",
+    "logout": "ログアウト",
+    "login": "ログイン",
+    "register": "会員登録"
+  },
+  "direction": {
+    "ko2ja": "韓国語 → 日本語",
+    "ja2ko": "日本語 → 韓国語"
+  },
+  "form": {
+    "ko_input": "翻訳する韓国語テキスト：",
+    "ja_input": "翻訳する日本語テキスト：",
+    "ko_placeholder": "翻訳する韓国語テキストを入力してください。",
+    "ja_placeholder": "翻訳する日本語テキストを入力してください。",
+    "translate": "翻訳する",
+    "translating": "翻訳中..."
+  },
+  "result": {
+    "original": "原文",
+    "translated": "翻訳結果",
+    "initial": "下訳を見る"
+  },
+  "history": {
+    "recent": "最近の翻訳履歴",
+    "view_all": "すべての履歴を見る",
+    "empty": "翻訳履歴がありません。",
+    "title": "私の翻訳履歴"
+  },
+  "errors": {
+    "login_required": "ログインが必要です。",
+    "translation_failed": "翻訳処理中にエラーが発生しました。",
+    "history_failed": "履歴の読み込みに失敗しました。",
+    "login_failed": "ログインに失敗しました。ユーザー名とパスワードを確認してください。",
+    "password_mismatch": "パスワードが一致しません。",
+    "register_failed": "会員登録中にエラーが発生しました。",
+    "invalid_input": "入力形式が正しくありません。"
+  },
+  "auth": {
+    "username": "ユーザー名",
+    "password": "パスワード",
+    "email": "メールアドレス",
+    "confirm_password": "パスワード確認",
+    "no_account": "アカウントをお持ちでないですか？",
+    "have_account": "すでにアカウントをお持ちですか？",
+    "login_link": "ログインする",
+    "register_success": "会員登録が完了しました。ログインしてください。",
+    "tagline": "機械学習ベースの日韓/韓日翻訳サービス"
+  },
+  "footer": "© 2025 LangGPT - 日韓/韓日翻訳サービス",
+  "language": "言語",
+  "change_language": "言語変更",
+  "loading": "処理中..."
+}
