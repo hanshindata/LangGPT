@@ -100,13 +100,13 @@ LangGPT/
 ## 📸 Screenshots
 
 ### Main Translation Screen
-<img alt="Main Screen" src="https://via.placeholder.com/800x450?text=Main+Translation+Screen">
+<img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
 
 ### Login Screen
-<img alt="Login Screen" src="https://via.placeholder.com/800x450?text=Login+Screen">
+<img alt="Login Screen" src="./screenshots/login_screen.png" width="800">
 
 ### Translation History
-<img alt="Translation History" src="https://via.placeholder.com/800x450?text=Translation+History+Screen">
+<img alt="Translation History" src="./screenshots/history_screen.png" width="800">
 
 ## 🔍 Detailed Features
 
