@@ -78,21 +78,34 @@ SECRET_KEY=your_jwt_secret_key
 ## 📂 Project Structure
 ```
 LangGPT/
-├── backend.py           # FastAPI backend
+├── backend.py           # FastAPI backend server
 ├── requirements.txt     # Python dependencies
-├── .env                 # Environment variables
-└── frontend/            # React frontend
-    ├── public/
-    ├── src/
-    │   ├── App.js       # Main application
-    │   ├── App.css      # Stylesheet
-    │   ├── index.js     # Entry point
-    │   ├── i18n/        # Internationalization
-    │   ├── services/    # API services
-    │   ├── components/  # React components
-    │   └── context/     # Context API
-    ├── package.json
-    └── README.md
+├── Procfile            # Deployment configuration for hosting platforms
+├── .gitignore          # Git ignore configuration
+├── .env                # Environment variables (development)
+├── .env.example        # Example environment variables template
+└── frontend/           # React frontend application
+    ├── public/         # Static files
+    ├── package.json    # Node.js dependencies
+    ├── .env            # Frontend environment variables (development)
+    ├── .env.production # Frontend environment variables (production)
+    └── src/
+        ├── App.js      # Main application component
+        ├── App.css     # Main stylesheet
+        ├── index.js    # Entry point
+        ├── i18n/       # Internationalization
+        │   ├── i18n.js # i18n configuration
+        │   └── locales/# Translation files
+        │       ├── ko.json # Korean translations
+        │       └── ja.json # Japanese translations
+        ├── services/   # API services
+        │   └── api.js  # API client configuration
+        ├── components/ # React components
+        │   ├── Login.js      # Login component
+        │   ├── Register.js   # Registration component
+        │   └── TranslationHistory.js # History component
+        └── context/    # React context management
+            └── AuthContext.js # Authentication context
 ```
 
 ## 📸 Screenshots
@@ -101,10 +114,10 @@ LangGPT/
 <img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
 
 ### Login Screen
-<img alt="Login Screen" src="./screenshots/login_screen.png" width="800">
+<img alt="Login Screen" src="./screenshots/login_screen.png">
 
 ### Translation History
-<img alt="Translation History" src="./screenshots/history_screen.png" width="800">
+<img alt="Translation History" src="./screenshots/translation_history.png">
 
 ## 🔍 Detailed Features
 
