@@ -10,6 +10,10 @@ LangGPT is an AI-powered translation service specializing in Korean-Japanese bid
 - **User Authentication**: Secure JWT-based authentication system
 - **Responsive Design**: Support for both mobile and desktop environments
 - **Bilingual Interface**: Full support for both Korean and Japanese UI
+- **User API Keys**: Users provide their own OpenAI API keys for translation operations
+
+## 🌐 Live Demo
+Try out the live version: [https://langgpt-six.vercel.app/](https://langgpt-six.vercel.app/)
 
 ## 🛠️ Technology Stack
 ### Backend
@@ -33,6 +37,7 @@ LangGPT is an AI-powered translation service specializing in Korean-Japanese bid
 - Node.js 16.x or higher
 - Python 3.9 or higher
 - PostgreSQL
+- OpenAI API Key (required for each user)
 
 ### Backend Setup
 ```bash
@@ -49,7 +54,7 @@ pip install -r requirements.txt
 
 # Set up environment variables
 cp .env.example .env
-# Edit .env file
+# Edit .env file with your database and JWT settings
 
 # Run server
 uvicorn backend:app --reload
@@ -63,32 +68,63 @@ cd frontend
 # Install dependencies
 npm install
 
+# Set up environment variables
+cp .env.example .env
+# Edit .env file with your backend URL
+
 # Start development server
 npm start
 ```
 
 ## 📄 Environment Variable Setup
 ```
-# .env file
+# Backend .env file
 DATABASE_URL=postgresql://username:password@localhost/langgpt
-OPENAI_API_KEY=your_openai_api_key
 SECRET_KEY=your_jwt_secret_key
+FRONTEND_URL=http://localhost:3000
+
+# Frontend .env file
+REACT_APP_API_URL=http://localhost:8000
 ```
+
+## ⚠️ API Key Requirements
+Each user needs to provide their own OpenAI API key to use the translation service:
+- API keys are securely stored in the browser session
+- API keys are never permanently stored on the server
+- Users can manage their API keys in the Settings page
+- Visit [OpenAI Platform](https://platform.openai.com/api-keys) to generate an API key
+
+## 🚢 Deployment
+
+### Backend Deployment (Render)
+1. Create a new Web Service on Render
+2. Connect your GitHub repository
+3. Add environment variables:
+   - `DATABASE_URL`: Your PostgreSQL database URL
+   - `SECRET_KEY`: Secret key for JWT
+   - `FRONTEND_URL`: URL of your frontend application
+4. Deploy with the following settings:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn backend:app --host 0.0.0.0 --port $PORT`
+
+### Frontend Deployment (Vercel)
+1. Import your GitHub repository on Vercel
+2. Add environment variables:
+   - `REACT_APP_API_URL`: URL of your backend API
+3. Deploy with default settings
 
 ## 📂 Project Structure
 ```
 LangGPT/
 ├── backend.py           # FastAPI backend server
 ├── requirements.txt     # Python dependencies
-├── Procfile            # Deployment configuration for hosting platforms
-├── .gitignore          # Git ignore configuration
 ├── .env                # Environment variables (development)
 ├── .env.example        # Example environment variables template
+├── screenshots/        # Application screenshots
 └── frontend/           # React frontend application
     ├── public/         # Static files
     ├── package.json    # Node.js dependencies
-    ├── .env            # Frontend environment variables (development)
-    ├── .env.production # Frontend environment variables (production)
+    ├── .env            # Frontend environment variables
     └── src/
         ├── App.js      # Main application component
         ├── App.css     # Main stylesheet
@@ -103,6 +139,7 @@ LangGPT/
         ├── components/ # React components
         │   ├── Login.js      # Login component
         │   ├── Register.js   # Registration component
+        │   ├── Settings.js   # API key management component
         │   └── TranslationHistory.js # History component
         └── context/    # React context management
             └── AuthContext.js # Authentication context
@@ -112,6 +149,9 @@ LangGPT/
 
 ### Main Translation Screen
 <img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
+
+### API Key Settings
+<img alt="Settings Screen" src="./screenshots/settings_screen.png" width="800">
 
 ### Login Screen
 <img alt="Login Screen" src="./screenshots/login_screen.png">
@@ -128,6 +168,11 @@ LangGPT/
 
 ### User Data Management
 - Users can store and access their translation history for easy reference to previous translations
+
+### API Key Management
+- Secure management of user OpenAI API keys
+- Keys stored only in browser session for enhanced security
+- Detailed instructions for obtaining and setting up API keys
 
 ## 👨‍💻 Developer Information
 - **Name**: HAN SHIN (韓 信)

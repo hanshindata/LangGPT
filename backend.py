@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
@@ -17,6 +17,9 @@ from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base  # 최신 방식 사용
 from sqlalchemy.orm import Session
 import uuid
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from starlette.middleware.sessions import SessionMiddleware
 
 # .env 파일 로드
 load_dotenv()
@@ -33,6 +36,25 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS"],  # 필요한 메소드만 허용
     allow_headers=["Content-Type", "Authorization", "Accept"],  # 필요한 헤더만 허용
 )
+
+# HTTPS 강제화 (프로덕션 환경에서)
+if os.getenv("ENVIRONMENT") == "production":
+    app.add_middleware(HTTPSRedirectMiddleware)
+
+# 신뢰할 수 있는 호스트만 허용
+app.add_middleware(
+    TrustedHostMiddleware, 
+    allowed_hosts=[frontend_url.replace("https://", ""), "localhost"]
+)
+
+# 보안 헤더 미들웨어 (CSRF 방지 등)
+@app.middleware("http")
+async def add_security_headers(request, call_next):
+    response = await call_next(request)
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    return response
 
 # 데이터베이스 설정
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://postgres:비밀번호@localhost/langgpt")
@@ -308,14 +330,15 @@ ja_to_ko_review_prompt = ChatPromptTemplate.from_template("""
 async def translate(
     request: TranslationRequest,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    api_key: str = Header(..., alias="X-API-KEY")  # 헤더에서 API 키 추출
 ):
     try:
-        # 사용자 제공 API 키 사용
-        if not request.api_key or not request.api_key.startswith("sk-"):
+        # API 키 검증
+        if not api_key or not api_key.startswith("sk-"):
             raise HTTPException(
                 status_code=400,
-                detail="Valid OpenAI API key is required. Please check your API key in settings."
+                detail="Valid OpenAI API key is required"
             )
         
         # 사용자의 일일 번역 횟수 확인
@@ -337,7 +360,7 @@ async def translate(
         
         # 사용자 API 키로 LLM 인스턴스 생성
         user_llm = ChatOpenAI(
-            api_key=request.api_key,  # 사용자 제공 API 키 사용
+            api_key=api_key,
             model="gpt-4.1-mini",
             temperature=0.7,
             max_tokens=2000
@@ -386,8 +409,12 @@ async def translate(
         return result
         
     except Exception as e:
-        print(f"Error during translation: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Translation failed: {str(e)}")
+        # 로그에서 민감 정보 제거
+        error_message = str(e)
+        if "sk-" in error_message:
+            error_message = "[API Key related error - details removed for security]"
+        print(f"Error during translation: {error_message}")
+        raise HTTPException(status_code=500, detail="Translation failed")
 
 # 번역 기록 조회 API
 @app.get("/history")
