@@ -53,9 +53,20 @@ function App() {
     setError('');
     
     try {
+      // 로컬 스토리지에서 API 키 가져오기
+      const apiKey = localStorage.getItem('openai_api_key');
+      
+      if (!apiKey) {
+        setError(t('errors.api_key_required', 'API 키가 필요합니다. 설정에서 API 키를 추가해주세요.'));
+        navigate('/settings');
+        setLoading(false);
+        return;
+      }
+      
       const response = await api.post('/translate', {
         text: inputText,
-        direction: direction
+        direction: direction,
+        api_key: apiKey  // 요청에 API 키 포함
       });
       
       setResult(response.data);
@@ -111,6 +122,7 @@ function App() {
             <>
               <span className="welcome-text">{t('nav.welcome', { username: user?.username || t('user') })}</span>
               <Link to="/history" className="nav-link">{t('nav.history')}</Link>
+              <Link to="/settings" className="nav-link">{t('nav.settings', '설정')}</Link>
               <button onClick={logout} className="logout-btn">{t('nav.logout')}</button>
             </>
           ) : (

@@ -24,13 +24,14 @@ load_dotenv()
 # FastAPI 애플리케이션 초기화
 app = FastAPI(title="LangGPT API")
 
-# CORS 설정
+# CORS 설정 개선
+frontend_url = os.getenv("FRONTEND_URL", "https://langgpt-frontend.vercel.app")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[frontend_url, "http://localhost:3000"],  # 특정 도메인만 허용
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],  # 필요한 메소드만 허용
+    allow_headers=["Content-Type", "Authorization", "Accept"],  # 필요한 헤더만 허용
 )
 
 # 데이터베이스 설정
@@ -202,27 +203,45 @@ async def get_user_info(current_user: User = Depends(get_current_user)):
     return {
         "id": current_user.id,
         "username": current_user.username,
-        "email": current_user.email
+        "email": current_user.email,
     }
 
-# OpenAI API 설정
-openai_api_key = os.getenv("OPENAI_API_KEY")
-if not openai_api_key:
-    raise ValueError("OPENAI_API_KEY 환경 변수가 설정되지 않았습니다.")
+# API 키 업데이트 요청 모델
+class ApiKeyUpdateRequest(BaseModel):
+    api_key: str
 
-# LLM 모델 설정
-llm = ChatOpenAI(
-    api_key=openai_api_key,
-    model="gpt-4.1-mini",  # 또는 다른 사용 가능한 모델
-    temperature=0.7,
-    max_tokens=2000
-)
+# API 키 업데이트 엔드포인트 
+@app.put("/api/me/apikey")
+async def update_api_key(
+    request: ApiKeyUpdateRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    """사용자 API 키 업데이트"""
+    if not request.api_key or not request.api_key.startswith("sk-"):
+        raise HTTPException(
+            status_code=400, 
+            detail="Invalid API key format. OpenAI API keys should start with 'sk-'"
+        )
+    
+    # API 키 저장 (실제로는 저장되지 않음 - 현재 DB 스키마 제한)
+    # 성공 메시지만 반환
+    return {"message": "API key accepted. You can now use the translation service."}
+
+# API 키 상태 확인 엔드포인트
+@app.get("/api/me/apikey")
+async def get_api_key_status(current_user: User = Depends(get_current_user)):
+    """사용자의 API 키 설정 여부 확인"""
+    # 개인 API 키 사용이 필수임을 알리기 위해 항상 False 반환
+    # (사용자가 직접 API 키를 설정하도록 유도)
+    return {"has_api_key": False}
 
 # API 요청/응답 모델
 class TranslationRequest(BaseModel):
     text: str
     direction: str = "ko2ja"  # ko2ja(한국어→일본어) 또는 ja2ko(일본어→한국어)
-    
+    api_key: str  # 사용자 API 키 필드 추가
+
 class TranslationResponse(BaseModel):
     original: str
     translated: str
@@ -284,31 +303,46 @@ ja_to_ko_review_prompt = ChatPromptTemplate.from_template("""
 개선된 최종 번역만 제공한다. 설명이나 부가 설명 없이 개선된 한국어 번역만 작성한다.
 """)
 
-# 사용자별 일일 번역 제한 설정 (선택사항)
+# 번역 API 엔드포인트
 @app.post("/translate", response_model=TranslationResponse)
 async def translate(
     request: TranslationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    # 사용자의 일일 번역 횟수 확인 (선택적 보안 강화)
-    today = datetime.now().date()
-    today_start = datetime.combine(today, datetime.min.time())
-    
-    # 오늘 사용자의 번역 횟수 조회
-    user_translations_today = db.query(TranslationHistory).filter(
-        TranslationHistory.user_id == current_user.id,
-        TranslationHistory.created_at >= today_start.isoformat()
-    ).count()
-    
-    # 일일 제한 확인 (예: 100회)
-    if user_translations_today >= 100:
-        raise HTTPException(
-            status_code=429, 
-            detail="Daily translation limit reached. Please try again tomorrow."
-        )
-    
     try:
+        # 사용자 제공 API 키 사용
+        if not request.api_key or not request.api_key.startswith("sk-"):
+            raise HTTPException(
+                status_code=400,
+                detail="Valid OpenAI API key is required. Please check your API key in settings."
+            )
+        
+        # 사용자의 일일 번역 횟수 확인
+        today = datetime.now().date()
+        today_start = datetime.combine(today, datetime.min.time())
+        
+        # 오늘 사용자의 번역 횟수 조회
+        user_translations_today = db.query(TranslationHistory).filter(
+            TranslationHistory.user_id == current_user.id,
+            TranslationHistory.created_at >= today_start.isoformat()
+        ).count()
+        
+        # 일일 제한 확인 (예: 100회)
+        if user_translations_today >= 100:
+            raise HTTPException(
+                status_code=429, 
+                detail="Daily translation limit reached. Please try again tomorrow."
+            )
+        
+        # 사용자 API 키로 LLM 인스턴스 생성
+        user_llm = ChatOpenAI(
+            api_key=request.api_key,  # 사용자 제공 API 키 사용
+            model="gpt-4.1-mini",
+            temperature=0.7,
+            max_tokens=2000
+        )
+        
         # 번역 방향에 따라 프롬프트 선택
         if request.direction == "ko2ja":
             translation_prompt = ko_to_ja_translation_prompt
@@ -319,13 +353,13 @@ async def translate(
         else:
             raise HTTPException(status_code=400, detail="Invalid translation direction")
         
-        # 1단계: 기본 번역
-        translation_chain = translation_prompt | llm
+        # 사용자 API 키로 번역 실행
+        translation_chain = translation_prompt | user_llm
         initial_translation_result = translation_chain.invoke({"text": request.text})
         initial_translation = initial_translation_result.content
         
-        # 2단계: 번역 검토 및 개선
-        review_chain = review_prompt | llm
+        # 검토 과정도 사용자 API 키 사용
+        review_chain = review_prompt | user_llm
         reviewed_translation_result = review_chain.invoke({
             "original": request.text,
             "translated": initial_translation

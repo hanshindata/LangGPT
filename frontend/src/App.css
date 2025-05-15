@@ -403,3 +403,138 @@ h3 {
   font-size: 1rem;
   margin-top: 5px;
 }
+
+/* 설정 페이지 스타일 */
+.settings-container {
+  max-width: 700px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.settings-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.settings-form {
+  margin-top: 20px;
+}
+
+.api-key-status {
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.api-key-status.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.api-key-status.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.api-key-instructions {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 15px 0;
+}
+
+.api-key-instructions ol {
+  margin-left: 20px;
+}
+
+.api-key-instructions li {
+  margin-bottom: 8px;
+}
+
+.success-message {
+  padding: 10px;
+  background-color: #d4edda;
+  color: #155724;
+  border-radius: 4px;
+  margin-bottom: 15px;
+}
+
+/* 설정 페이지 스타일 추가 */
+.settings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.back-to-app-btn {
+  color: #0056b3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.back-to-app-btn:hover {
+  color: #003d7a;
+  text-decoration: underline;
+}
+
+/* 번역 기록 페이지 스타일 */
+.history-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.history-list {
+  margin-top: 20px;
+}
+
+.history-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.history-original, .history-translated {
+  margin-bottom: 15px;
+}
+
+.history-original h4, .history-translated h4 {
+  color: #666;
+  margin: 0 0 5px 0;
+  font-size: 14px;
+}
+
+.history-original p, .history-translated p {
+  margin: 0;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 4px;
+  white-space: pre-wrap;
+}
+
+.history-date {
+  text-align: right;
+  color: #999;
+  font-size: 12px;
+}
+
+.empty-message {
+  text-align: center;
+  color: #666;
+  padding: 40px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.loading-message {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+}

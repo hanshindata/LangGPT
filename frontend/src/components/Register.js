@@ -35,7 +35,7 @@ const Register = () => {
     setLoading(true);
     
     try {
-      // 회원가입 API 호출
+      // 회원가입 API 호출 - API 키 없이 진행
       await api.post('/register', {
         username,
         email,

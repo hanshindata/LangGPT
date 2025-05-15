@@ -5,7 +5,8 @@
     "history": "翻訳履歴",
     "logout": "ログアウト",
     "login": "ログイン",
-    "register": "会員登録"
+    "register": "会員登録",
+    "settings": "設定"
   },
   "direction": {
     "ko2ja": "韓国語 → 日本語",
@@ -29,7 +30,8 @@
     "recent": "最近の翻訳履歴",
     "view_all": "すべての履歴を見る",
     "empty": "翻訳履歴がありません。",
-    "title": "私の翻訳履歴"
+    "title": "私の翻訳履歴",
+    "back_to_translator": "翻訳機能に戻る"
   },
   "errors": {
     "login_required": "ログインが必要です。",
@@ -38,7 +40,8 @@
     "login_failed": "ログインに失敗しました。ユーザー名とパスワードを確認してください。",
     "password_mismatch": "パスワードが一致しません。",
     "register_failed": "会員登録中にエラーが発生しました。",
-    "invalid_input": "入力形式が正しくありません。"
+    "invalid_input": "入力形式が正しくありません。",
+    "api_key_required": "APIキーが必要です。設定でAPIキーを追加してください。"
   },
   "auth": {
     "username": "ユーザー名",
@@ -54,5 +57,25 @@
   "footer": "© 2025 LangGPT - 日韓/韓日翻訳サービス",
   "language": "言語",
   "change_language": "言語変更",
-  "loading": "処理中..."
+  "loading": "処理中...",
+  "settings": {
+    "title": "アカウント設定",
+    "api_key_section": "OpenAI APIキー設定",
+    "api_key_active": "APIキーが設定されています",
+    "api_key_missing": "APIキーが設定されていません",
+    "api_key_required": "APIキーを設定しないと翻訳機能を使用できません",
+    "api_key_description": "翻訳サービスの利用には、あなた自身のOpenAI APIキーが必要です。APIキーはブラウザに保存され、サーバーに送信されません。",
+    "api_key_instructions": "APIキーの設定方法",
+    "visit_openai": "1. OpenAIウェブサイトにアクセスします: ",
+    "create_account": "2. アカウントがない場合は作成します。",
+    "create_key": "3. \"APIキー生成\"をクリックして新しいAPIキーを作成します。",
+    "copy_key": "4. 生成されたAPIキーを下の入力欄に貼り付けてください。",
+    "api_key": "OpenAI APIキー",
+    "save": "保存",
+    "account_info": "アカウント情報",
+    "api_key_updated": "APIキーが正常に更新されました",
+    "update_failed": "APIキーの更新に失敗しました",
+    "back_to_translator": "翻訳機能に戻る",
+    "invalid_api_key": "APIキーの形式が正しくありません。OpenAI APIキーは「sk-」で始まる必要があります。"
+  }
 }

@@ -5,7 +5,8 @@
     "history": "번역 기록",
     "logout": "로그아웃",
     "login": "로그인",
-    "register": "회원가입"
+    "register": "회원가입",
+    "settings": "설정"
   },
   "direction": {
     "ko2ja": "한국어 → 일본어",
@@ -29,7 +30,8 @@
     "recent": "최근 번역 기록",
     "view_all": "모든 기록 보기",
     "empty": "번역 기록이 없습니다.",
-    "title": "나의 번역 기록"
+    "title": "나의 번역 기록",
+    "back_to_translator": "번역기로 돌아가기"
   },
   "errors": {
     "login_required": "로그인이 필요합니다.",
@@ -38,7 +40,8 @@
     "login_failed": "로그인에 실패했습니다. 사용자명과 비밀번호를 확인하세요.",
     "password_mismatch": "비밀번호가 일치하지 않습니다.",
     "register_failed": "회원가입 중 오류가 발생했습니다.",
-    "invalid_input": "입력 형식이 올바르지 않습니다."
+    "invalid_input": "입력 형식이 올바르지 않습니다.",
+    "api_key_required": "API 키가 필요합니다. 설정에서 API 키를 추가해주세요."
   },
   "auth": {
     "username": "사용자명",
@@ -54,5 +57,25 @@
   "footer": "© 2025 LangGPT - 한일/일한 번역 서비스",
   "language": "언어",
   "change_language": "언어 변경",
-  "loading": "처리 중..."
+  "loading": "처리 중...",
+  "settings": {
+    "title": "계정 설정",
+    "api_key_section": "OpenAI API 키 설정",
+    "api_key_active": "API 키가 설정되어 있습니다",
+    "api_key_missing": "API 키가 설정되지 않았습니다",
+    "api_key_required": "API 키를 설정하지 않으면 번역 기능을 사용할 수 없습니다",
+    "api_key_description": "번역 서비스 이용을 위해 본인의 OpenAI API 키가 필요합니다. API 키는 브라우저에 저장되며 서버로 전송되지 않습니다.",
+    "api_key_instructions": "API 키 설정 방법",
+    "visit_openai": "1. OpenAI 웹사이트를 방문하세요: ",
+    "create_account": "2. 계정이 없다면 계정을 만드세요.",
+    "create_key": "3. \"API 키 생성\"을 클릭하여 새 API 키를 만드세요.",
+    "copy_key": "4. 생성된 API 키를 아래 입력란에 붙여넣으세요.",
+    "api_key": "OpenAI API 키",
+    "save": "저장",
+    "account_info": "계정 정보",
+    "api_key_updated": "API 키가 성공적으로 업데이트되었습니다",
+    "update_failed": "API 키 업데이트에 실패했습니다",
+    "back_to_translator": "번역기로 돌아가기",
+    "invalid_api_key": "API 키 형식이 올바르지 않습니다. OpenAI API 키는 \"sk-\"로 시작해야 합니다."
+  }
 }

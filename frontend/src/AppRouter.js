@@ -5,6 +5,7 @@ import App from './App';
 import Login from './components/Login';
 import Register from './components/Register';
 import TranslationHistory from './components/TranslationHistory';
+import Settings from './components/Settings';
 import { AuthContext } from './context/AuthContext';
 
 // 보호된 라우트 컴포넌트
@@ -35,6 +36,11 @@ const AppRouter = () => {
       <Route path="/history" element={
         <ProtectedRoute>
           <TranslationHistory />
+        </ProtectedRoute>
+      } />
+      <Route path="/settings" element={
+        <ProtectedRoute>
+          <Settings />
         </ProtectedRoute>
       } />
     </Routes>
