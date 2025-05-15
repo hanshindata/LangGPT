@@ -150,14 +150,14 @@ LangGPT/
 ### Main Translation Screen
 <img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
 
-### API Key Settings
-<img alt="Settings Screen" src="./screenshots/settings_screen.png" width="800">
-
 ### Login Screen
 <img alt="Login Screen" src="./screenshots/login_screen.png">
 
 ### Translation History
 <img alt="Translation History" src="./screenshots/translation_history.png">
+
+### API Key Settings
+<img alt="Settings Screen" src="./screenshots/settings_screen.png">
 
 ## 🔍 Detailed Features
 
