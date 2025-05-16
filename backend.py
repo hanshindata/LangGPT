@@ -34,6 +34,7 @@ app.add_middleware(
         "http://localhost:3000",
         "https://langgpt.pro",       # 루트 도메인 추가
         "https://www.langgpt.pro"    # www 서브도메인 추가
+        "https://langgpt-six.vercel.app"  # 기존 Vercel 도메인
     ],  
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
@@ -52,6 +53,7 @@ app.add_middleware(
         "localhost",
         "langgpt.pro",
         "www.langgpt.pro"
+        "langgpt-six.vercel.app"  # 기존 Vercel 도메인 추가
     ]
 )
 
