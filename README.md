@@ -51,6 +51,11 @@ Try out the live version: [https://langgpt.pro/](https://langgpt.pro/)
 - **Axios**: API communication
 - **Context API**: State management
 
+### Infrastructure
+- **Render**: Backend API hosting
+- **Vercel**: Frontend hosting and deployment
+- **PostgreSQL (Cloud)**: Database hosting
+
 ## 🚀 Installation and Setup
 
 ### Prerequisites
