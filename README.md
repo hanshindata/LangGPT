@@ -3,17 +3,37 @@
 ## 📌 Introduction
 LangGPT is an AI-powered translation service specializing in Korean-Japanese bidirectional translation. Using a two-step translation process, it provides more natural-sounding results beyond the limitations of conventional machine translation.
 
-## ✨ Key Features
+## ✨ Features
 - **Bidirectional Translation**: Support for Korean → Japanese and Japanese → Korean
-- **Two-step Translation Process**: Initial translation followed by AI review to improve quality
-- **Translation History**: Store and retrieve user-specific translation records
-- **User Authentication**: Secure JWT-based authentication system
-- **Responsive Design**: Support for both mobile and desktop environments
-- **Bilingual Interface**: Full support for both Korean and Japanese UI
-- **User API Keys**: Users provide their own OpenAI API keys for translation operations
+- **Two-step Translation Process**: Initial translation followed by AI review to improve quality.
+    - *Initial Translation*: Basic AI translation of the source text.
+    - *Translation Review*: Review of the initial translation for a more natural result.
+    - *Result Comparison*: Ability to compare initial and reviewed translations.
+- **Translation History**: Store and retrieve user-specific translation records for easy reference.
+- **User Authentication**: Secure JWT-based authentication system.
+- **Responsive Design**: Support for both mobile and desktop environments.
+- **Bilingual Interface**: Full support for both Korean and Japanese UI.
+- **User API Keys**: Users provide their own OpenAI API keys for translation operations.
+    - API keys are securely stored in the browser session.
+    - API keys are never permanently stored on the server.
+    - Users can manage their API keys in the Settings page.
 
 ## 🌐 Live Demo
-Try out the live version: [https://langgpt-six.vercel.app/](https://langgpt-six.vercel.app/)
+Try out the live version: [https://langgpt.pro/](https://langgpt.pro/)
+
+## 📸 Screenshots
+
+### Main Translation Screen
+<img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
+
+### Login Screen
+<img alt="Login Screen" src="./screenshots/login_screen.png">
+
+### Translation History
+<img alt="Translation History" src="./screenshots/translation_history.png">
+
+### API Key Settings
+<img alt="Settings Screen" src="./screenshots/settings_screen.png">
 
 ## 🛠️ Technology Stack
 ### Backend
@@ -144,35 +164,6 @@ LangGPT/
         └── context/    # React context management
             └── AuthContext.js # Authentication context
 ```
-
-## 📸 Screenshots
-
-### Main Translation Screen
-<img alt="Main Screen" src="./screenshots/main_screen.png" width="800">
-
-### Login Screen
-<img alt="Login Screen" src="./screenshots/login_screen.png">
-
-### Translation History
-<img alt="Translation History" src="./screenshots/translation_history.png">
-
-### API Key Settings
-<img alt="Settings Screen" src="./screenshots/settings_screen.png">
-
-## 🔍 Detailed Features
-
-### Two-step Translation Process
-- **Initial Translation**: Basic AI translation of the source text
-- **Translation Review**: Review of the initial translation for a more natural result
-- **Result Comparison**: Ability to compare initial and reviewed translations
-
-### User Data Management
-- Users can store and access their translation history for easy reference to previous translations
-
-### API Key Management
-- Secure management of user OpenAI API keys
-- Keys stored only in browser session for enhanced security
-- Detailed instructions for obtaining and setting up API keys
 
 ## 👨‍💻 Developer Information
 - **Name**: HAN SHIN (韓 信)
