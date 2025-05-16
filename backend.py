@@ -25,37 +25,24 @@ load_dotenv()
 # FastAPI 애플리케이션 초기화
 app = FastAPI(title="LangGPT API")
 
-# CORS 설정 개선
-frontend_url = os.getenv("FRONTEND_URL", "https://www.langgpt.pro")
+## CORS 설정 개선
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        frontend_url, 
-        "http://localhost:3000",
-        "https://langgpt.pro",       # 루트 도메인 추가
-        "https://www.langgpt.pro",    # www 서브도메인 추가
-        "https://langgpt-six.vercel.app"  # 기존 Vercel 도메인
-    ],  
+    allow_origins=["*"],  # 모든 origin 허용
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization", "Accept"],
+    allow_methods=["*"],  # 모든 HTTP 메서드 허용
+    allow_headers=["*"],  # 모든 헤더 허용
 )
 
-# HTTPS 강제화 (프로덕션 환경에서)
-if os.getenv("ENVIRONMENT") == "production":
-    app.add_middleware(HTTPSRedirectMiddleware)
+# 아래 미들웨어는 주석 처리하여 비활성화
+# if os.getenv("ENVIRONMENT") == "production":
+#     app.add_middleware(HTTPSRedirectMiddleware)
 
 # 신뢰할 수 있는 호스트만 허용
-app.add_middleware(
-    TrustedHostMiddleware, 
-    allowed_hosts=[
-        frontend_url.replace("https://", ""), 
-        "localhost",
-        "langgpt.pro",
-        "www.langgpt.pro",
-        "langgpt-six.vercel.app"  # 기존 Vercel 도메인 추가
-    ]
-)
+# app.add_middleware(
+#     TrustedHostMiddleware, 
+#     allowed_hosts=["*"]  # 모든 호스트 허용
+# )
 
 # 보안 헤더 미들웨어 (CSRF 방지 등)
 @app.middleware("http")
