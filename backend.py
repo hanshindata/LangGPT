@@ -28,10 +28,14 @@ app = FastAPI(title="LangGPT API")
 ## CORS 설정 개선
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 모든 origin 허용
+    allow_origins=[
+        "https://langgpt.pro", 
+        "https://www.langgpt.pro",
+        "https://langgpt-six.vercel.app"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],  # 모든 HTTP 메서드 허용
-    allow_headers=["*"],  # 모든 헤더 허용
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept", "X-API-KEY"],
 )
 
 # 아래 미들웨어는 주석 처리하여 비활성화
