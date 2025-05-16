@@ -26,7 +26,7 @@ load_dotenv()
 app = FastAPI(title="LangGPT API")
 
 # CORS 설정 개선
-frontend_url = os.getenv("FRONTEND_URL", "https://langgpt-six.vercel.app", "https://www.langgpt.pro")
+frontend_url = os.getenv("FRONTEND_URL", "https://www.langgpt.pro")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
