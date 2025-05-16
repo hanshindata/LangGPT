@@ -2,7 +2,6 @@ from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
-import json
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
@@ -14,12 +13,11 @@ from passlib.context import CryptContext
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from sqlalchemy import Column, Integer, String, create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base  # 최신 방식 사용
+from sqlalchemy.orm import sessionmaker, declarative_base
 from sqlalchemy.orm import Session
 import uuid
 from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from starlette.middleware.sessions import SessionMiddleware
 
 # .env 파일 로드
 load_dotenv()
@@ -28,13 +26,18 @@ load_dotenv()
 app = FastAPI(title="LangGPT API")
 
 # CORS 설정 개선
-frontend_url = os.getenv("FRONTEND_URL", "https://langgpt-six.vercel.app")
+frontend_url = os.getenv("FRONTEND_URL", "https://langgpt-six.vercel.app", "https://www.langgpt.pro")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[frontend_url, "http://localhost:3000"],  # 특정 도메인만 허용
+    allow_origins=[
+        frontend_url, 
+        "http://localhost:3000",
+        "https://langgpt.pro",       # 루트 도메인 추가
+        "https://www.langgpt.pro"    # www 서브도메인 추가
+    ],  
     allow_credentials=True,
-    allow_methods=["GET", "POST", "OPTIONS"],  # 필요한 메소드만 허용
-    allow_headers=["Content-Type", "Authorization", "Accept"],  # 필요한 헤더만 허용
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization", "Accept"],
 )
 
 # HTTPS 강제화 (프로덕션 환경에서)
@@ -44,7 +47,12 @@ if os.getenv("ENVIRONMENT") == "production":
 # 신뢰할 수 있는 호스트만 허용
 app.add_middleware(
     TrustedHostMiddleware, 
-    allowed_hosts=[frontend_url.replace("https://", ""), "localhost"]
+    allowed_hosts=[
+        frontend_url.replace("https://", ""), 
+        "localhost",
+        "langgpt.pro",
+        "www.langgpt.pro"
+    ]
 )
 
 # 보안 헤더 미들웨어 (CSRF 방지 등)
@@ -228,36 +236,6 @@ async def get_user_info(current_user: User = Depends(get_current_user)):
         "email": current_user.email,
     }
 
-# API 키 업데이트 요청 모델
-class ApiKeyUpdateRequest(BaseModel):
-    api_key: str
-
-# API 키 업데이트 엔드포인트 
-@app.put("/api/me/apikey")
-async def update_api_key(
-    request: ApiKeyUpdateRequest,
-    current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
-    """사용자 API 키 업데이트"""
-    if not request.api_key or not request.api_key.startswith("sk-"):
-        raise HTTPException(
-            status_code=400, 
-            detail="Invalid API key format. OpenAI API keys should start with 'sk-'"
-        )
-    
-    # API 키 저장 (실제로는 저장되지 않음 - 현재 DB 스키마 제한)
-    # 성공 메시지만 반환
-    return {"message": "API key accepted. You can now use the translation service."}
-
-# API 키 상태 확인 엔드포인트
-@app.get("/api/me/apikey")
-async def get_api_key_status(current_user: User = Depends(get_current_user)):
-    """사용자의 API 키 설정 여부 확인"""
-    # 개인 API 키 사용이 필수임을 알리기 위해 항상 False 반환
-    # (사용자가 직접 API 키를 설정하도록 유도)
-    return {"has_api_key": False}
-
 # API 요청/응답 모델
 class TranslationRequest(BaseModel):
     text: str
@@ -331,36 +309,21 @@ async def translate(
     request: TranslationRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-    api_key: str = Header(..., alias="X-API-KEY")  # 헤더에서 API 키 추출
+    api_key: str = Header(None, alias="X-API-KEY")  # 헤더 API 키를 선택적으로 변경
 ):
     try:
-        # API 키 검증
-        if not api_key or not api_key.startswith("sk-"):
+        # API 키 검증 - 헤더 우선, 없으면 요청 본문 사용
+        used_api_key = api_key if api_key else request.api_key
+        
+        if not used_api_key or not used_api_key.startswith("sk-"):
             raise HTTPException(
                 status_code=400,
                 detail="Valid OpenAI API key is required"
             )
         
-        # 사용자의 일일 번역 횟수 확인
-        today = datetime.now().date()
-        today_start = datetime.combine(today, datetime.min.time())
-        
-        # 오늘 사용자의 번역 횟수 조회
-        user_translations_today = db.query(TranslationHistory).filter(
-            TranslationHistory.user_id == current_user.id,
-            TranslationHistory.created_at >= today_start.isoformat()
-        ).count()
-        
-        # 일일 제한 확인 (예: 100회)
-        if user_translations_today >= 100:
-            raise HTTPException(
-                status_code=429, 
-                detail="Daily translation limit reached. Please try again tomorrow."
-            )
-        
         # 사용자 API 키로 LLM 인스턴스 생성
         user_llm = ChatOpenAI(
-            api_key=api_key,
+            api_key=used_api_key,
             model="gpt-4.1-mini",
             temperature=0.7,
             max_tokens=2000
@@ -376,12 +339,12 @@ async def translate(
         else:
             raise HTTPException(status_code=400, detail="Invalid translation direction")
         
-        # 사용자 API 키로 번역 실행
+        # 번역 실행
         translation_chain = translation_prompt | user_llm
         initial_translation_result = translation_chain.invoke({"text": request.text})
         initial_translation = initial_translation_result.content
         
-        # 검토 과정도 사용자 API 키 사용
+        # 검토 과정
         review_chain = review_prompt | user_llm
         reviewed_translation_result = review_chain.invoke({
             "original": request.text,
@@ -409,12 +372,21 @@ async def translate(
         return result
         
     except Exception as e:
-        # 로그에서 민감 정보 제거
+        # 보다 유용한 에러 메시지 제공
         error_message = str(e)
         if "sk-" in error_message:
-            error_message = "[API Key related error - details removed for security]"
+            # API 키는 숨기되 오류 유형은 표시
+            if "invalid_api_key" in error_message.lower() or "authentication" in error_message.lower():
+                error_message = "Invalid API key provided"
+            elif "rate_limit" in error_message.lower():
+                error_message = "OpenAI API rate limit exceeded"
+            elif "insufficient_quota" in error_message.lower():
+                error_message = "OpenAI API quota exceeded"
+            else:
+                error_message = "OpenAI API error occurred"
+        
         print(f"Error during translation: {error_message}")
-        raise HTTPException(status_code=500, detail="Translation failed")
+        raise HTTPException(status_code=500, detail=f"Translation failed: {error_message}")
 
 # 번역 기록 조회 API
 @app.get("/history")
